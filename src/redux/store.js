@@ -1,25 +1,26 @@
 import { createStore, applyMiddleware } from 'redux';
 import reducers from "./reducers";
 
-let tracker;
+// let tracker;
 
-if (localStorage.getItem('tracker')) {
-  tracker = JSON.parse(localStorage.getItem('tracker'));
-} else {
-  tracker = [];
-}
+// if (localStorage.getItem('tracker')) {
+//   tracker = JSON.parse(localStorage.getItem('tracker'));
+// } else {
+//   tracker = [];
+// }
 
-function logger() {
+const tracker = () => {
   return next => action => {
-    tracker.push(action);
-    localStorage.setItem('tracker', JSON.stringify(tracker));
+    // tracker.push(action);
+    // localStorage.setItem('tracker', JSON.stringify(tracker));
+    console.log('action', action);
     return next(action);
   }
 }
 
 const store = createStore(
   reducers,
-  applyMiddleware(logger)
+  applyMiddleware(tracker)
 );
 
 export default store;
