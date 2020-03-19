@@ -1,13 +1,30 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
 
 class App extends Component {
   constructor () {
     super();
 
+    let isTracking;
+    if (localStorage.getItem('isTracking')) {
+      isTracking = localStorage.getItem('isTracking');
+      console.log('isTracking exists', isTracking);
+    } else {
+      isTracking = false;
+      localStorage.setItem('isTracking', isTracking);
+      console.log('isTracking does not exist', isTracking);
+    }
+
+    this.state = {
+      todos: [],
+      form: {
+        name: ''
+      },
+      isTracking,
+    };
+
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
+    this.toggleTracking = this.toggleTracking.bind(this);
   }
 
   createTodo(todoName) {
@@ -22,36 +39,65 @@ class App extends Component {
   }
 
   handleOnChange(event) {
-    this.props.change(event.target.value);
+    this.setState({
+      form: {
+        name: event.target.value
+      }
+    });
   }
 
   handleSubmit(event) {
     event.preventDefault();
 
-    if (this.props.form.todoName.length < 1) {
+    if (this.state.form.name.length < 1) {
       return;
     } else {
-      this.props.add(this.createTodo(this.props.form.todoName));
+      this.setState({
+        todos: [...this.state.todos, this.createTodo(this.state.form.name)],
+        form: {
+          name: ''
+        }
+      });
     }
   }
 
-  handleDelete(id) {
-    this.props.delete(id);
+  isTracking() {
+    const isTracking = localStorage.getItem('isTracking');
+    if (isTracking === 'true') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  toggleTracking() {
+    if (this.isTracking()) {
+      localStorage.setItem('isTracking', false);
+      this.setState({
+        isTracking: false
+      });
+    } else {
+      localStorage.setItem('isTracking', true);
+      this.setState({
+        isTracking: true
+      });
+    }
   }
 
   render () {
-    console.log(this.props);
+    console.log(this.state);
     return (
       <>
         <div>
           <form onSubmit={this.handleSubmit}>
-            <input type='text' name='todoName' value={this.props.form.todoName} onChange={this.handleOnChange} />
+            <input type='text' name='todoName' value={this.state.form.name} onChange={this.handleOnChange} />
             <button type="submit" value="Add">Add</button>
           </form>
+          {this.isTracking() ? (<button onClick={() => this.toggleTracking()}>Stop tracking</button>) : (<button onClick={() => this.toggleTracking()}>Track</button>)}
         </div>
         <div>
           <ul>
-            {this.props.todos.map(todo => <li key={todo.id} onClick={() => this.handleDelete(todo.id)}>{todo.name}</li>)}
+            {this.state.todos.map(todo => <li key={todo.id}>{todo.name}</li>)}
           </ul>
         </div>
       </>
@@ -59,14 +105,4 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => ({ todos: state.todos, form: state.form });
-
-const mapDispatchToProps = dispatch => {
-  return {
-    add: (todo) => dispatch({ type: 'ADD_TODO', payload: todo }),
-    delete: (id) => dispatch({ type: 'DELETE_TODO', payload: id }),
-    change: (todoName) => dispatch({ type: 'CHANGE_INPUT', payload: todoName })
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
