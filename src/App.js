@@ -8,6 +8,7 @@ class App extends Component {
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleTrack = this.toggleTrack.bind(this);
+    this.clearHistory = this.clearHistory.bind(this);
   }
 
   createTodo(todoName) {
@@ -43,6 +44,10 @@ class App extends Component {
     }
   }
 
+  clearHistory() {
+    this.props.clearHistory();
+  }
+
   render () {
     console.log(this.props);
     return (
@@ -53,6 +58,7 @@ class App extends Component {
             <button type="submit" value="Add">Add</button>
           </form>
           <button onClick={() => this.toggleTrack()}>{this.props.isTracking ? 'Stop tracking' : 'Track'}</button>
+          <button onClick={() => this.clearHistory()}>Clear history</button>
         </div>
         <div>
           <ul>
@@ -74,7 +80,8 @@ const mapDispatchToProps = dispatch => {
   return {
     add: (todo) => dispatch({ type: 'ADD', payload: { todo } }),
     change: (name) => dispatch({ type: 'CHANGE', payload: { name } }),
-    toggleTrack: (track) => dispatch({ type: 'TOGGLE_TRACK', payload: { track } })
+    toggleTrack: (track) => dispatch({ type: 'TOGGLE_TRACK', payload: { track } }),
+    clearHistory: () => dispatch({ type: 'CLEAR_HISTORY' })
   }
 }
 

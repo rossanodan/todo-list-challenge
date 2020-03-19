@@ -10,16 +10,16 @@ if (localStorage.getItem('isTracking')) {
   localStorage.setItem('isTracking', isTracking);
 }
 
-let history;
-if (localStorage.getItem('history')) {
-  history = JSON.parse(localStorage.getItem('history'));
+let todos;
+if (localStorage.getItem('todos')) {
+  todos = JSON.parse(localStorage.getItem('todos'));
 } else {
-  history = [];
-  localStorage.setItem('history', JSON.stringify(history));
+  todos = [];
+  localStorage.setItem('todos', JSON.stringify(todos));
 }
 
 const initialState = {
-  todos: [],
+  todos,
   form: {
     name: ''
   },
@@ -27,31 +27,34 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
+  let history;
+  if (localStorage.getItem('history')) {
+    history = JSON.parse(localStorage.getItem('history'));
+  } else {
+    history = [];
+    localStorage.setItem('history', JSON.stringify(history));
+  }
+
   switch (action.type) {
     case 'ADD': {
       const { todo } = action.payload;
 
-      // if tracking, store the action
       if (state.isTracking) {
         history.push(action);
         localStorage.setItem('history',  JSON.stringify(history));
       }
 
+      todos.push(todo);
+      localStorage.setItem('todos',  JSON.stringify(todos));
+
       return {
         ...state,
-        todos: [...state.todos, todo],
+        todos: JSON.parse(localStorage.getItem('todos')),
         form: {
           name: ''
         }
       };
     };
-    // case 'DELETE_TODO': {
-    //   const todos = state.todos.filter(todo => todo.id !== action.payload);
-    //   return {
-    //     ...state,
-    //     todos,
-    //   };
-    // }
     case 'CHANGE': {
       const { name } = action.payload;
       return {
@@ -62,7 +65,6 @@ export default function(state = initialState, action) {
       };
     };
     case 'TOGGLE_TRACK': {
-      console.log('Toggle track', action.payload);
       const { track } = action.payload;
       localStorage.setItem('isTracking', track);
       return {
@@ -70,6 +72,11 @@ export default function(state = initialState, action) {
         isTracking: track
       };
     };
+    case 'CLEAR_HISTORY': {
+      const history = [];
+      localStorage.setItem('history', JSON.stringify(history));
+      return state;
+    }
     default:
       return state;
   }
