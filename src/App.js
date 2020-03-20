@@ -71,7 +71,13 @@ class App extends Component {
         <div className='todosContainer'>
           {
             this.props.todos.map(todo => (
-              <div className='todo' key={todo.id} onClick={() => this.props.onTodoDelete(todo)}>{todo.name}</div>
+              <div
+                className='todo'
+                key={todo.id}
+                onClick={() => this.props.onTodoDelete(todo)}
+              >
+                {todo.name}
+              </div>
             ))
           }
         </div>
