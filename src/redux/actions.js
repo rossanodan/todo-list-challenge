@@ -1,8 +1,17 @@
-// The classic AJAX call - dispatch before the request, and after it comes back
-const actionCreator = () => {
+const playHistory = () => {
   return dispatch => {
-    dispatch({ type : "ACTION_CREATOR" });   
+    dispatch({ type: 'TODO_CLEAR' });
+
+    const history = JSON.parse(localStorage.getItem('history'));
+    if (history.length > 0) {
+      let i = 0;
+      const interval = setInterval(() => {
+        let action = history[i++];
+        dispatch(action);
+        if (i >= history.length) clearInterval(interval);
+      }, 1000);
+    }
   };
 };
 
-export { actionCreator };
+export { playHistory };

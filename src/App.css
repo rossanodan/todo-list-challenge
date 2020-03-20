@@ -1,0 +1,32 @@
+.controlBarContainer, .recordingController, .todosContainer {
+  padding: 20px;
+}
+
+.controlBar {
+  text-align: center;
+}
+
+.controlBar input {
+  width: 70%;
+}
+
+.controlBar input[type="submit"] {
+  width: 20%;
+}
+
+.todo {
+  background-color: darkkhaki;
+  border-radius: 25px;
+  padding: 30px;
+  transition: 0.5s;
+}
+
+/* margin-top only in the middle */
+.todo + .todo {
+  margin-top: 10px;
+}
+
+.todo:hover {
+  cursor: pointer;
+  background-color: #F00;
+}

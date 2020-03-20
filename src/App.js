@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { actionCreator } from './redux/actions';
+import { playHistory } from './redux/actions';
+
+import './App.css';
 
 class App extends Component {
   constructor () {
@@ -34,31 +36,44 @@ class App extends Component {
     console.log(this.props);
     return (
       <>
-        <div>
-          <form onSubmit={this.handleSubmit}>
+        <div className='controlBarContainer'>
+          <form className='controlBar' onSubmit={this.handleSubmit}>
             <input
               type='text'
               name='name'
               value={this.props.form.name}
               onChange={(event) =>  this.props.onInputChange(event.target.value)}
             />
-            <button type="submit" value="Add">Add</button>
+            <button type="submit">Add</button>
+            <div className='recordingController'>
+              <button
+                onClick={() => this.props.toggleTrack(!this.props.isTracking)}
+              >
+                {this.props.isTracking ? 'Stop recording' : 'Record'}
+              </button>
+              {this.props.isTracking ? null : (
+                <>
+                  <button
+                    onClick={() => this.props.onPlay()}
+                  >
+                    Play Recording
+                  </button>
+                  <button
+                    onClick={() => this.props.onClear()}
+                  >
+                    Clear Recording
+                  </button>
+                </>
+              )}
+            </div>
           </form>
-          <button
-            onClick={() => this.props.toggleTrack(!this.props.isTracking)}
-          >
-            {this.props.isTracking ? 'Stop tracking' : 'Track'}
-          </button>
-          <button
-            onClick={() => this.props.actionCreator()}
-          >
-            Action Creator
-          </button>
         </div>
-        <div>
-          <ul>
-            {this.props.todos.map(todo => <li key={todo.id}>{todo.name}</li>)}
-          </ul>
+        <div className='todosContainer'>
+          {
+            this.props.todos.map(todo => (
+              <div className='todo' key={todo.id} onClick={() => this.props.onTodoDelete(todo)}>{todo.name}</div>
+            ))
+          }
         </div>
       </>
     );
@@ -74,9 +89,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     onTodoAdd: (todo) => dispatch({ type: 'TODO_ADD', payload: { todo } }),
+    onTodoDelete: (todo) => dispatch({ type: 'TODO_DELETE', payload: { todo } }),
     onInputChange: (name) => dispatch({ type: 'INPUT_CHANGE', payload: { name } }),
     toggleTrack: (track) => dispatch({ type: 'TOGGLE_TRACK', payload: { track } }),
-    actionCreator: () => dispatch(actionCreator())
+    onPlay: () => dispatch(playHistory()),
+    onClear: () => dispatch({ type: 'HISTORY_CLEAR' })
   }
 }
 

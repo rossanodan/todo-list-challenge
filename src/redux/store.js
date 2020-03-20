@@ -1,4 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
+import history from '../HistorySingleton';
+import todos from '../TodosSingleton';
 import thunk from 'redux-thunk';
 
 // tracking status //
@@ -11,28 +13,8 @@ if (localStorage.getItem('isTracking') && localStorage.getItem('isTracking') ===
 }
 // tracking status //
 
-// todo list //
-let todos;
-if (localStorage.getItem('todos')) {
-  todos = JSON.parse(localStorage.getItem('todos'));
-} else {
-  todos = [];
-  localStorage.setItem('todos', JSON.stringify(todos));
-}
-// todo list //
-
-// history //
-let history;
-if (localStorage.getItem('history')) {
-  history = JSON.parse(localStorage.getItem('history'));
-} else {
-  history = [];
-  localStorage.setItem('history', JSON.stringify(history));
-}
-// history //
-
 const initialState = {
-  todos,
+  todos: todos.get(),
   form: {
     name: ''
   },
@@ -46,19 +28,37 @@ const reducer = (state = initialState, action) => {
 
       // if tracking, update the history
       if (state.isTracking) {
-        history.push(action);
-        localStorage.setItem('history',  JSON.stringify(history));
+        history.add(action);
       }
 
-      todos.push(todo);
-      localStorage.setItem('todos',  JSON.stringify(todos));
+      todos.add(todo);
 
       return {
         ...state,
-        todos: JSON.parse(localStorage.getItem('todos')),
+        todos: todos.get(),
         form: {
           name: ''
         }
+      };
+    };
+    case 'TODO_DELETE': {
+      // if tracking, update the history
+      if (state.isTracking) {
+        history.add(action);
+      }
+
+      todos.delete(action.payload);
+
+      return {
+        ...state,
+        todos: todos.get()
+      };
+    };
+    case 'TODO_CLEAR': {
+      todos.clean()
+      return {
+        ...state,
+        todos: todos.get()
       };
     };
     case 'INPUT_CHANGE': {
@@ -80,8 +80,8 @@ const reducer = (state = initialState, action) => {
         isTracking: track
       };
     };
-    case 'ACTION_CREATOR': {
-      console.log('action creator');
+    case 'HISTORY_CLEAR': {
+      history.clean();
       return state;
     };
     default:
