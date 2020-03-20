@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { actionCreator } from './redux/actions';
 
 class App extends Component {
   constructor () {
     super();
 
-    this.handleOnChange = this.handleOnChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.toggleTrack = this.toggleTrack.bind(this);
-    this.clearHistory = this.clearHistory.bind(this);
   }
 
   createTodo(todoName) {
@@ -22,30 +20,14 @@ class App extends Component {
     }
   }
 
-  handleOnChange(event) {
-    this.props.change(event.target.value);
-  }
-
   handleSubmit(event) {
     event.preventDefault();
 
     if (this.props.form.name.length < 1) {
       return;
     } else {
-      this.props.add(this.createTodo(this.props.form.name));
+      this.props.onTodoAdd(this.createTodo(this.props.form.name));
     }
-  }
-
-  toggleTrack() {
-    if (this.props.isTracking) {
-      this.props.toggleTrack(false);
-    } else {
-      this.props.toggleTrack(true);
-    }
-  }
-
-  clearHistory() {
-    this.props.clearHistory();
   }
 
   render () {
@@ -54,11 +36,24 @@ class App extends Component {
       <>
         <div>
           <form onSubmit={this.handleSubmit}>
-            <input type='text' name='todoName' value={this.props.form.name} onChange={this.handleOnChange} />
+            <input
+              type='text'
+              name='name'
+              value={this.props.form.name}
+              onChange={(event) =>  this.props.onInputChange(event.target.value)}
+            />
             <button type="submit" value="Add">Add</button>
           </form>
-          <button onClick={() => this.toggleTrack()}>{this.props.isTracking ? 'Stop tracking' : 'Track'}</button>
-          <button onClick={() => this.clearHistory()}>Clear history</button>
+          <button
+            onClick={() => this.props.toggleTrack(!this.props.isTracking)}
+          >
+            {this.props.isTracking ? 'Stop tracking' : 'Track'}
+          </button>
+          <button
+            onClick={() => this.props.actionCreator()}
+          >
+            Action Creator
+          </button>
         </div>
         <div>
           <ul>
@@ -78,10 +73,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    add: (todo) => dispatch({ type: 'ADD', payload: { todo } }),
-    change: (name) => dispatch({ type: 'CHANGE', payload: { name } }),
+    onTodoAdd: (todo) => dispatch({ type: 'TODO_ADD', payload: { todo } }),
+    onInputChange: (name) => dispatch({ type: 'INPUT_CHANGE', payload: { name } }),
     toggleTrack: (track) => dispatch({ type: 'TOGGLE_TRACK', payload: { track } }),
-    clearHistory: () => dispatch({ type: 'CLEAR_HISTORY' })
+    actionCreator: () => dispatch(actionCreator())
   }
 }
 
