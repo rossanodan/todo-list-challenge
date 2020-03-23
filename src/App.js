@@ -28,7 +28,7 @@ class App extends Component {
     if (this.props.form.name.length < 1) {
       return;
     } else {
-      this.props.onTodoAdd(this.createTodo(this.props.form.name));
+      this.props.onTodoAdd(this.props.form);
     }
   }
 
@@ -72,11 +72,11 @@ class App extends Component {
           {
             this.props.todos.map(todo => (
               <div
-                className='todo'
                 key={todo.id}
-                onClick={() => this.props.onTodoDelete(todo)}
               >
-                {todo.name}
+                <p>{todo.name}</p>
+                <button onClick={() => this.props.onTodoEdit(todo)}>Edit</button>
+                <button onClick={() => this.props.onTodoDelete(todo)}>Delete</button>
               </div>
             ))
           }
@@ -96,6 +96,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onTodoAdd: (todo) => dispatch({ type: 'TODO_ADD', payload: { todo } }),
     onTodoDelete: (todo) => dispatch({ type: 'TODO_DELETE', payload: { todo } }),
+    onTodoEdit: (todo) => dispatch({ type: 'TODO_EDIT', payload: { todo } }),
     onInputChange: (name) => dispatch({ type: 'INPUT_CHANGE', payload: { name } }),
     toggleTrack: (track) => dispatch({ type: 'TOGGLE_TRACK', payload: { track } }),
     onPlay: () => dispatch(playHistory()),

@@ -16,7 +16,10 @@ if (localStorage.getItem('isTracking') && localStorage.getItem('isTracking') ===
 const initialState = {
   todos: todos.get(),
   form: {
-    name: ''
+    id: null,
+    name: '',
+    createdOn: null,
+    done: false
   },
   isTracking,
 };
@@ -31,14 +34,25 @@ const reducer = (state = initialState, action) => {
         history.add(action);
       }
 
-      todos.add(todo);
+      // if todo.id already exists the action is edit
+      // add otherwise
+      const alreadyExistingTodo = todos.get().filter(t => todo.id === t.id);
+
+      if (alreadyExistingTodo.length > 0) {
+        todos.update(todo);
+      } else {
+        todos.add(todo);
+      }
 
       return {
         ...state,
         todos: todos.get(),
         form: {
-          name: ''
-        }
+          id: null,
+          name: '',
+          createdOn: null,
+          done: false
+        },
       };
     };
     case 'TODO_DELETE': {
@@ -54,6 +68,32 @@ const reducer = (state = initialState, action) => {
         todos: todos.get()
       };
     };
+    case 'TODO_EDIT': {
+      // if tracking, update the history
+      if (state.isTracking) {
+        history.add(action);
+      }
+
+      const { id } = action.payload.todo;
+      const target = todos.get().filter(todo => todo.id === id);
+
+      return {
+        ...state,
+        form: {
+          id: target[0].id,
+          name: target[0].name,
+          createdOn: target[0].createdOn,
+          done: target[0].done
+        }
+      };
+
+      // todos.delete(action.payload);
+
+      // return {
+      //   ...state,
+      //   todos: todos.get()
+      // };
+    };
     case 'TODO_CLEAR': {
       todos.clean()
       return {
@@ -63,10 +103,15 @@ const reducer = (state = initialState, action) => {
     };
     case 'INPUT_CHANGE': {
       const { name } = action.payload;
+      const now = new Date();
+
       return {
         ...state,
         form: {
-          name
+          id: state.form.id || now.getTime(),
+          name: name,
+          createdOn: state.form.createdOn || now,
+          done: state.form.done || false
         }
       };
     };

@@ -12,6 +12,14 @@ class TodosSingleton {
     this.todos.push(obj);
     this.sync();
   }
+  update(obj) {
+    this.todos.map(todo => {
+      if (todo.id === obj.id) {
+        todo.name = obj.name;
+      }
+    });
+    this.sync();
+  }
   delete(obj) {
     const id = obj.todo.id;
     this.todos = this.todos.filter(todo => todo.id !== id);
