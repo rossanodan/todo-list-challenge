@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { playHistory } from './redux/actions';
 
+import Button from './components/Button';
+import Todo from './components/Todo';
+
 import './App.css';
 
 class App extends Component {
@@ -9,17 +12,6 @@ class App extends Component {
     super();
 
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  createTodo(todoName) {
-    const now = new Date();
-
-    return {
-      id: now.getTime(),
-      name: todoName,
-      createdOn: now,
-      done: false
-    }
   }
 
   handleSubmit(event) {
@@ -33,7 +25,6 @@ class App extends Component {
   }
 
   render () {
-    console.log(this.props);
     return (
       <>
         <div className='controlBarContainer'>
@@ -44,25 +35,25 @@ class App extends Component {
               value={this.props.form.name}
               onChange={(event) =>  this.props.onInputChange(event.target.value)}
             />
-            <button type="submit">Add</button>
+            <Button type="submit">Add</Button>
             <div className='recordingController'>
-              <button
-                onClick={() => this.props.toggleTrack(!this.props.isTracking)}
+              <Button
+                handleClick={() => this.props.toggleTrack(!this.props.isTracking)}
               >
                 {this.props.isTracking ? 'Stop recording' : 'Record'}
-              </button>
+              </Button>
               {this.props.isTracking ? null : (
                 <>
-                  <button
-                    onClick={() => this.props.onPlay()}
+                  <Button
+                    handleClick={() => this.props.onPlay()}
                   >
                     Play Recording
-                  </button>
-                  <button
-                    onClick={() => this.props.onClear()}
+                  </Button>
+                  <Button
+                    handleClick={() => this.props.onClear()}
                   >
                     Clear Recording
-                  </button>
+                  </Button>
                 </>
               )}
             </div>
@@ -71,13 +62,12 @@ class App extends Component {
         <div className='todosContainer'>
           {
             this.props.todos.map(todo => (
-              <div
+              <Todo
                 key={todo.id}
-              >
-                <p>{todo.name}</p>
-                <button onClick={() => this.props.onTodoEdit(todo)}>Edit</button>
-                <button onClick={() => this.props.onTodoDelete(todo)}>Delete</button>
-              </div>
+                todo={todo}
+                handleEdit={() => this.props.onTodoEdit(todo)}
+                handleDelete={() => this.props.onTodoDelete(todo)}
+              />
             ))
           }
         </div>
