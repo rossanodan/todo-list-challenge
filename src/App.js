@@ -5,7 +5,7 @@ import { playHistory } from './redux/actions';
 import Button from './components/Button';
 import Todo from './components/Todo';
 
-import './App.css';
+import styles from './App.module.scss';
 
 class App extends Component {
   constructor () {
@@ -26,18 +26,25 @@ class App extends Component {
 
   render () {
     return (
-      <>
-        <div className='controlBarContainer'>
-          <form className='controlBar' onSubmit={this.handleSubmit}>
+      <div data-test='appComponent'>
+        <div className={styles.controlBarContainer}>
+          <form className={styles.controlBar} onSubmit={this.handleSubmit}>
             <input
+              className={styles.inputField}
               type='text'
               name='name'
               value={this.props.form.name}
               onChange={(event) =>  this.props.onInputChange(event.target.value)}
             />
-            <Button type="submit">Add</Button>
-            <div className='recordingController'>
+            <Button
+              type="submit"
+              styleDef={styles.buttonGreen}
+            >
+              Add
+            </Button>
+            <div className={styles.recordingController}>
               <Button
+                styleDef={styles.buttonRed}
                 handleClick={() => this.props.toggleTrack(!this.props.isTracking)}
               >
                 {this.props.isTracking ? 'Stop recording' : 'Record'}
@@ -45,11 +52,13 @@ class App extends Component {
               {this.props.isTracking ? null : (
                 <>
                   <Button
+                    styleDef={styles.buttonLightblue}
                     handleClick={() => this.props.onPlay()}
                   >
                     Play Recording
                   </Button>
                   <Button
+                    styleDef={styles.buttonGray}
                     handleClick={() => this.props.onClear()}
                   >
                     Clear Recording
@@ -59,7 +68,7 @@ class App extends Component {
             </div>
           </form>
         </div>
-        <div className='todosContainer'>
+        <div className={styles.todosContainer}>
           {
             this.props.todos.map(todo => (
               <Todo
@@ -71,7 +80,7 @@ class App extends Component {
             ))
           }
         </div>
-      </>
+      </div>
     );
   }
 }

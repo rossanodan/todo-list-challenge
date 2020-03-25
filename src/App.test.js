@@ -1,11 +1,12 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import App from '../src/App';
+import store from './redux/store';
 
 describe('<App />', () => {
   it('should be initialised without errors', () => {
-    const wrapper = mount(<App />);
+    const wrapper = shallow(<App store={store} />);
     expect(wrapper).toBeDefined();
     wrapper.unmount();
   });

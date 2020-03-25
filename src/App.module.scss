@@ -1,0 +1,90 @@
+.controlBarContainer, .recordingController, .todosContainer {
+  padding: 20px;
+}
+
+.controlBarContainer {
+  .controlBar {
+    text-align: center;
+  }
+  
+  .controlBar input {
+    width: 70%;
+  }
+  
+  .controlBar input[type="submit"] {
+    width: 20%;
+  }
+}
+
+button + button {
+  margin-left: 10px;
+}
+
+.inputField, .buttonGreen, .buttonRed, .buttonLightblue, .buttonGray {
+  padding: 10px;
+  border-radius: 5px;
+  &:focus {
+    outline: none;
+  }
+}
+
+.buttonGreen {
+  background-color: white;
+  border: 1px solid green;
+  color: green;
+  margin-left: 10px;
+  cursor: pointer;
+  &:active {
+    background-color: darkgreen;
+  }
+  &:hover {
+    background-color: green;
+    border: 1px solid white;
+    color: white;
+  }
+}
+
+.buttonRed {
+  background-color: white;
+  border: 1px solid red;
+  color: red;
+  cursor: pointer;
+  &:active {
+    background-color: darkred;
+  }
+  &:hover {
+    background-color: red;
+    border: 1px solid white;
+    color: white;
+  }
+}
+
+.buttonLightblue {
+  background-color: white;
+  border: 1px solid lightblue;
+  color: lightblue;
+  cursor: pointer;
+  &:active {
+    background-color: darkblue;
+  }
+  &:hover {
+    background-color: lightblue;
+    border: 1px solid lightblue;
+    color: white;
+  }
+}
+
+.buttonGray {
+  background-color: white;
+  border: 1px solid gray;
+  color: gray;
+  cursor: pointer;
+  &:active {
+    background-color: darkgray;
+  }
+  &:hover {
+    background-color: gray;
+    border: 1px solid gray;
+    color: white;
+  }
+}
