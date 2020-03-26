@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --open --mode development",
-    "test": "jest",
+    "test": "karma start",
     "build": "webpack --mode production"
   },
   "keywords": [],
@@ -36,18 +36,11 @@
   "dependencies": {
     "check-prop-types": "^1.1.2",
     "react": "^16.13.0",
+    "react-addons": "^0.9.1-deprecated",
     "react-dom": "^16.13.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
-  },
-  "jest": {
-    "snapshotSerializers": ["enzyme-to-json/serializer"],
-    "collectCoverageFrom": ["src/**/*.js", "!src/index.js"],
-    "coverageReporters": ["text"],
-    "moduleNameMapper":{
-      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
-    },
-    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.js"]
+    "redux-thunk": "^2.3.0",
+    "webpack-karma-jasmine": "^3.0.8"
   }
 }
