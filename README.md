@@ -2,7 +2,7 @@
 
 ### Architecture
 
-![The architecture](./architecture.png)
+![The architecture](./architectureSingleton.png)
 
 ### Technology stack
 
