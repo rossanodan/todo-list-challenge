@@ -43,8 +43,26 @@ describe('<App />', () => {
     act(() => {
       ReactDOM.render(<App store={store} />, container);
     });
+
     const input = container.querySelector('input');
-    console.log('input', input);
+
     expect(input).toBeDefined();
+    expect(store.getState()).toEqual(initialState);
+  });
+
+  it('should change the state when typing', () => {
+    act(() => {
+      ReactDOM.render(<App store={store} />, container);
+    });
+
+    const input = container.querySelector('input');
+    
+    act(() => {
+      input.value = 'Todo test';
+      let event = new CustomEvent('change', { bubbles: true });
+      input.dispatchEvent(event);
+    });
+
+    expect(input.value).toBe('Todo test');
   });
 });
