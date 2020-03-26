@@ -2,7 +2,7 @@
 
 ### Architecture
 
-_to do_
+![The architecture](./architecture.png)
 
 ### Technology stack
 

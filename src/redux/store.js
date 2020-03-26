@@ -102,7 +102,6 @@ const reducer = (state = initialState, action) => {
       };
     };
     case 'INPUT_CHANGE': {
-      console.log('input change');
       const { name } = action.payload;
       const now = new Date();
 
