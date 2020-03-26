@@ -36,3 +36,12 @@ npm run build
 ```
 npm test
 ```
+
+#### What's next (what I'd do to improve the project)
+
+* Code review and refactoring - I think the actual code can be refactored into more testable components
+* Refactor the Redux store creating action creators - more testable
+* UX analysis to understand how the UI can be improved (colours, layout and number of clicks the user has to perform)
+* Setup a CI/CD pipeline - Travis CI, Circle CI, etc - and automated deployment if the build is green
+  * run a job for each PR and if it's green "open the gate" to master and merge
+* Deploy the project on Firebase - I like using it. It's free and it easy to use for monitoring and for scaling resources (auto scaling)
