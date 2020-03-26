@@ -1,18 +1,6 @@
 # To Do List Challenge
 
-### Overview
-
-_to do_
-
 ### Architecture
-
-_to do_
-
-### The application state
-
-_to do_
-
-### Components
 
 _to do_
 
@@ -23,17 +11,28 @@ _to do_
 * Webpack (bundler and live webserver - live reload)
 * Babel (ES6 to "plain javascript" for the browser)
 * Redux (application state management)
+* Redux Thunk
+* Karma and Jasmine for unit testing
 
 ### How to use
 
 #### Run the project locally
 
-_to do_
+```
+git clone https://github.com/rossanodan/todo-list-challenge.git
+cd todo-list-challenge
+npm install
+npm start
+```
 
 #### Build the project for production
 
-_to do_
+```
+npm run build
+```
 
 #### Test
 
-_to do_
+```
+npm test
+```
